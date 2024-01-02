@@ -1,1 +1,2 @@
 # MinimalAPIApp
+#Minimal APIs in . NET Core are a lightweight and straightforward way to create web endpoints with minimal overhead. They are part of the ASP.NET Core framework and are designed to streamline the process of building HTTP-based APIs and services.
