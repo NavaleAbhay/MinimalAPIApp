@@ -25,12 +25,13 @@ app.MapGet("/products/{id}", async (int id, ProductContext context) =>
     {
         Product? product = await context.Products.FindAsync(id);
         return product is not null ? Results.Ok(product) : Results.NotFound();
-    });
+    }).WithName("GetById");
 
-app.MapPost("/products", async(Product product,ProductContext context)=>
+app.MapPost("/products", async (Product product,ProductContext context)=>
     {
-     await context.Products.AddAsync(product);
-     return Results.CreatedAtRoute($"products/{product.ProductId}");
+   await context.Products.AddAsync(product);
+     await context.SaveChangesAsync();
+     return Results.CreatedAtRoute("GetById",new { id = product.ProductId },product);
     });
 
 app.MapPut("/products/{id}",async (int id,Product product, ProductContext context) =>
@@ -40,7 +41,7 @@ app.MapPut("/products/{id}",async (int id,Product product, ProductContext contex
         {
           return  Results.NotFound();
         }
-        oldProduct.ProductId=product.ProductId;
+        // oldProduct.ProductId=product.ProductId;
         oldProduct.Title=product.Title;
         oldProduct.Description=product.Description;
         oldProduct.Price=product.Price;
